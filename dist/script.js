@@ -4925,16 +4925,19 @@ function configureModal(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _common_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./common/modal */ "./src/js/common/modal.js");
-/* harmony import */ var _jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./jsmodules/formSubmit */ "./src/js/jsmodules/formSubmit.js");
-/* harmony import */ var _jsmodules_modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./jsmodules/modal */ "./src/js/jsmodules/modal.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _common_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common/modal */ "./src/js/common/modal.js");
+/* harmony import */ var _jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./jsmodules/formSubmit */ "./src/js/jsmodules/formSubmit.js");
+/* harmony import */ var _jsmodules_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./jsmodules/modal */ "./src/js/jsmodules/modal.js");
+
 
 
 
 document.addEventListener('DOMContentLoaded', function () {
   // modals
   var modalAutoTrigger = setTimeout(function () {
-    Object(_common_modal__WEBPACK_IMPORTED_MODULE_0__["openModal"])('.popup_engineer', 'show');
+    Object(_common_modal__WEBPACK_IMPORTED_MODULE_1__["openModal"])('.popup_engineer', 'show');
   }, 60000);
   var firstModal = {
     modalSelector: '.popup_engineer',
@@ -4950,8 +4953,8 @@ document.addEventListener('DOMContentLoaded', function () {
     showClass: 'show',
     intervalsToClear: [modalAutoTrigger]
   };
-  Object(_jsmodules_modal__WEBPACK_IMPORTED_MODULE_2__["default"])(firstModal);
-  Object(_jsmodules_modal__WEBPACK_IMPORTED_MODULE_2__["default"])(secondModal); // form 
+  Object(_jsmodules_modal__WEBPACK_IMPORTED_MODULE_3__["default"])(firstModal);
+  Object(_jsmodules_modal__WEBPACK_IMPORTED_MODULE_3__["default"])(secondModal); // forms
 
   var pageFormsConfig = {
     formSelector: '.main_form',
@@ -4960,7 +4963,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showClass: 'show',
     intervalsToClear: [modalAutoTrigger]
   };
-  Object(_jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_1__["default"])(pageFormsConfig);
+  Object(_jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_2__["default"])(pageFormsConfig);
   var popupFormsConfig = {
     formSelector: '.popup_form form',
     url: 'http://localhost:3000/requests',
@@ -4969,7 +4972,23 @@ document.addEventListener('DOMContentLoaded', function () {
     intervalsToClear: [modalAutoTrigger],
     modalsToClose: ['.popup', '.popup_calc_end', '.popup_engineer']
   };
-  Object(_jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_1__["default"])(popupFormsConfig);
+  Object(_jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_2__["default"])(popupFormsConfig); // forms validation
+
+  var numberInputs = document.querySelectorAll('input[name="user_phone"');
+  console.log(numberInputs);
+  numberInputs.forEach(function (item) {
+    var pattern = /^[0-9+() ]+$/;
+    ;
+    item.addEventListener('input', function () {
+      if (item.value && !pattern.test(item.value)) {
+        item.style.borderColor = 'red';
+        item.style.background = 'rgba(255, 0, 0, .1)';
+      } else {
+        item.style.borderColor = '';
+        item.style.background = '';
+      }
+    });
+  });
 });
 
 /***/ })

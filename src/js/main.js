@@ -27,9 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   configureModal(firstModal);
   configureModal(secondModal);
-  
 
-  // form 
+  // forms
 
   const pageFormsConfig = {
       formSelector: '.main_form',
@@ -52,4 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   submitFormData(popupFormsConfig);
 
+  // forms validation
+
+  const numberInputs = document.querySelectorAll('input[name="user_phone"');
+
+  console.log(numberInputs);
+
+  numberInputs.forEach(item => {
+    const pattern = /^[0-9+() ]+$/;;
+
+    item.addEventListener('input', () => {
+      if (item.value && !pattern.test(item.value)) {
+        item.style.borderColor = 'red';
+        item.style.background = 'rgba(255, 0, 0, .1)';
+      } else {
+        item.style.borderColor = '';
+        item.style.background = '';
+      }
+    })
+  })
 });
