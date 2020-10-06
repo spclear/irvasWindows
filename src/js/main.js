@@ -1,6 +1,7 @@
 import { openModal } from './common/modal';
 import submitFormData from './jsmodules/formSubmit';
 import configureModal from './jsmodules/modal';
+import configureTimer from './jsmodules/timer';
 
 document.addEventListener('DOMContentLoaded', () => {
   // modals
@@ -55,8 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const numberInputs = document.querySelectorAll('input[name="user_phone"');
 
-  console.log(numberInputs);
-
   numberInputs.forEach(item => {
     const pattern = /^[0-9+() ]+$/;;
 
@@ -70,4 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   })
+
+  // timer 
+
+  configureTimer('.sale', '2020-10-07T00:00');
+
+  // images preview
+
+  
 });

@@ -4916,6 +4916,82 @@ function configureModal(props) {
 
 /***/ }),
 
+/***/ "./src/js/jsmodules/timer.js":
+/*!***********************************!*\
+  !*** ./src/js/jsmodules/timer.js ***!
+  \***********************************/
+/*! exports provided: configureTimer, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "configureTimer", function() { return configureTimer; });
+function configureTimer(timerSelector, deadline) {
+  var timerNode = document.querySelector(timerSelector);
+  var timerInterval = setInterval(function () {
+    updateTimer(timerNode, deadline, timerInterval);
+  }, 1000);
+  updateTimer(timerNode, deadline, timerInterval); // only functions below
+
+  function calcTimeRemaining(deadline) {
+    var timeRemaining = Date.parse(deadline) - Date.parse(new Date());
+    return {
+      total: timeRemaining,
+      days: Math.floor(timeRemaining / (1000 * 60 * 60 * 24)),
+      hours: Math.floor(timeRemaining / (1000 * 60 * 60) % 24),
+      minutes: Math.floor(timeRemaining / (1000 * 60) % 60),
+      seconds: Math.floor(timeRemaining / 1000 % 60)
+    };
+  }
+
+  function displayTimer(node) {
+    var days = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    var hours = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var minutes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+    var seconds = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+    setTextContent(node, '#days', withZero(days));
+    setTextContent(node, '#hours', withZero(hours));
+    setTextContent(node, '#minutes', withZero(minutes));
+    setTextContent(node, '#seconds', withZero(seconds));
+  }
+
+  function updateTimer(node, deadline, timerInterval) {
+    var timeRemaining = calcTimeRemaining(deadline);
+    var days = timeRemaining.days,
+        hours = timeRemaining.hours,
+        minutes = timeRemaining.minutes,
+        seconds = timeRemaining.seconds;
+
+    if (timeRemaining.total <= 0) {
+      displayTimer(node);
+      clearInterval(timerInterval);
+      return;
+    }
+
+    displayTimer(node, days, hours, minutes, seconds);
+  }
+
+  function withZero(number) {
+    if (number >= 0 && number < 10) {
+      return '0' + number;
+    }
+
+    return number;
+  } // additional function in case there is no node for days/minutes/hours/seconds
+
+
+  function setTextContent(node, selector, value) {
+    var pageNode = node.querySelector(selector);
+
+    if (pageNode) {
+      pageNode.textContent = value;
+    }
+  }
+}
+/* harmony default export */ __webpack_exports__["default"] = (configureTimer);
+
+/***/ }),
+
 /***/ "./src/js/main.js":
 /*!************************!*\
   !*** ./src/js/main.js ***!
@@ -4930,6 +5006,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common/modal */ "./src/js/common/modal.js");
 /* harmony import */ var _jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./jsmodules/formSubmit */ "./src/js/jsmodules/formSubmit.js");
 /* harmony import */ var _jsmodules_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./jsmodules/modal */ "./src/js/jsmodules/modal.js");
+/* harmony import */ var _jsmodules_timer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./jsmodules/timer */ "./src/js/jsmodules/timer.js");
+
 
 
 
@@ -4975,7 +5053,6 @@ document.addEventListener('DOMContentLoaded', function () {
   Object(_jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_2__["default"])(popupFormsConfig); // forms validation
 
   var numberInputs = document.querySelectorAll('input[name="user_phone"');
-  console.log(numberInputs);
   numberInputs.forEach(function (item) {
     var pattern = /^[0-9+() ]+$/;
     ;
@@ -4988,7 +5065,9 @@ document.addEventListener('DOMContentLoaded', function () {
         item.style.background = '';
       }
     });
-  });
+  }); // timer 
+
+  Object(_jsmodules_timer__WEBPACK_IMPORTED_MODULE_4__["default"])('.sale', '2020-10-07T00:00'); // images preview
 });
 
 /***/ })
