@@ -1,5 +1,7 @@
 import { openModal } from './common/modal';
+import { validateInputs } from './common/validation';
 import submitFormData from './jsmodules/formSubmit';
+import previewImage from './jsmodules/imagePreview';
 import configureModal from './jsmodules/modal';
 import configureTimer from './jsmodules/timer';
 
@@ -39,8 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
       intervalsToClear: [modalAutoTrigger],
   };
 
-  submitFormData(pageFormsConfig);
-
   const popupFormsConfig = {
       formSelector: '.popup_form form',
       url: 'http://localhost:3000/requests',
@@ -50,31 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
       modalsToClose: ['.popup','.popup_calc_end', '.popup_engineer'],
     };
 
+  submitFormData(pageFormsConfig);
   submitFormData(popupFormsConfig);
 
   // forms validation
+  // timer
+  // preview for gallery
 
-  const numberInputs = document.querySelectorAll('input[name="user_phone"');
-
-  numberInputs.forEach(item => {
-    const pattern = /^[0-9+() ]+$/;;
-
-    item.addEventListener('input', () => {
-      if (item.value && !pattern.test(item.value)) {
-        item.style.borderColor = 'red';
-        item.style.background = 'rgba(255, 0, 0, .1)';
-      } else {
-        item.style.borderColor = '';
-        item.style.background = '';
-      }
-    })
-  })
-
-  // timer 
-
+  validateInputs('input[name="user_phone"]', /^[0-9+() ]+$/)
   configureTimer('.sale', '2020-10-07T00:00');
-
-  // images preview
-
+  previewImage('.preview_images div');
   
 });
