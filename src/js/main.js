@@ -3,6 +3,7 @@ import { validateInputs } from './common/validation';
 import submitFormData from './jsmodules/formSubmit';
 import previewImage from './jsmodules/imagePreview';
 import configureModal from './jsmodules/modal';
+import configureTabs from './jsmodules/tabs';
 import configureTimer from './jsmodules/timer';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,16 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const firstModal = {
     modalSelector: '.popup_engineer',
-    selectorsToOpen: ['.popup_engineer_btn'],
-    selectorsToClose: ['.popup_close'],
+    openTriggers: ['.popup_engineer_btn'],
+    closeTriggers: ['.popup_close'],
     showClass: 'show',
     intervalsToClear: [modalAutoTrigger],
   }
 
   const secondModal = {
     modalSelector: '.popup',
-    selectorsToOpen: ['.phone_link', '.phone_popup'],
-    selectorsToClose: ['.popup_close'],
+    openTriggers: ['.phone_link', '.phone_popup'],
+    closeTriggers: ['.popup_close'],
     showClass: 'show',
     intervalsToClear: [modalAutoTrigger]
   }
@@ -58,7 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // preview for gallery
 
   validateInputs('input[name="user_phone"]', /^[0-9+() ]+$/)
-  configureTimer('.sale', '2020-10-07T00:00');
+  configureTimer('.sale', '2020-11-01T00:00');
   previewImage('.preview_images div');
   
+  // tabs 
+
+  configureTabs('.glazing_content', '.glazing_block', 'active', 0);
+  configureTabs('.decoration_content_item', '.decoration_slider .no_click', 'after_click', 0);
+
 });

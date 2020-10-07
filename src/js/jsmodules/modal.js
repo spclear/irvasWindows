@@ -3,15 +3,15 @@ import { openModal, closeModal, addListenersToArr } from '../common/modal';
 function configureModal(props) {
   const {
     modalSelector,
-    selectorsToOpen,
-    selectorsToClose,
+    openTriggers,
+    closeTriggers,
     showClass,
     intervalsToClear = []
   } = props;
   const modal = document.querySelector(modalSelector);
   
-  addListenersToArr(selectorsToOpen, open);
-  addListenersToArr(selectorsToClose, close);
+  addListenersToArr(openTriggers, open);
+  addListenersToArr(closeTriggers, close);
 
   modal.addEventListener('click', (e) => {
     if (e.target && e.target === modal) {

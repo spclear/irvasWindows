@@ -13,4 +13,3 @@ export function validateInputs(inputSelector, pattern) {
     })
   })
 }
-

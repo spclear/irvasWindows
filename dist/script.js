@@ -4789,13 +4789,14 @@ function createPreview() {
 /*!********************************!*\
   !*** ./src/js/common/modal.js ***!
   \********************************/
-/*! exports provided: openModal, closeModal, addListenersToArr */
+/*! exports provided: openModal, closeModal, addListeners, addListenersToArr */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "openModal", function() { return openModal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "closeModal", function() { return closeModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addListeners", function() { return addListeners; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addListenersToArr", function() { return addListenersToArr; });
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
@@ -4808,14 +4809,56 @@ var closeModal = function closeModal(modalSelector, showClass) {
   var modal = document.querySelector(modalSelector);
   modal.classList.remove(showClass);
 };
-var addListenersToArr = function addListenersToArr(arr, callback) {
-  arr.forEach(function (item) {
-    var triggers = document.querySelectorAll(item);
-    triggers.forEach(function (trigger) {
-      trigger.addEventListener('click', callback);
-    });
+var addListeners = function addListeners(selector, callback) {
+  var event = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'click';
+  var triggers = document.querySelectorAll(selector);
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener(event, callback);
   });
 };
+var addListenersToArr = function addListenersToArr(arr, callback) {
+  var event = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'click';
+  arr.forEach(function (item) {
+    addListeners(item, callback, event);
+  });
+};
+
+/***/ }),
+
+/***/ "./src/js/common/tabs.js":
+/*!*******************************!*\
+  !*** ./src/js/common/tabs.js ***!
+  \*******************************/
+/*! exports provided: setActiveElement, displayOnlyOne */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setActiveElement", function() { return setActiveElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayOnlyOne", function() { return displayOnlyOne; });
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+function setActiveElement(selector, index, activeClass) {
+  var items = document.querySelectorAll(selector);
+  items.forEach(function (item, i) {
+    item.classList.remove(activeClass);
+
+    if (i === index) {
+      item.classList.add(activeClass);
+    }
+  });
+}
+function displayOnlyOne(selector, index) {
+  var items = document.querySelectorAll(selector);
+  items.forEach(function (item, i) {
+    item.style.display = 'none';
+
+    if (i === index) {
+      item.style.display = '';
+    }
+  });
+}
 
 /***/ }),
 
@@ -4978,14 +5021,14 @@ __webpack_require__.r(__webpack_exports__);
 
 function configureModal(props) {
   var modalSelector = props.modalSelector,
-      selectorsToOpen = props.selectorsToOpen,
-      selectorsToClose = props.selectorsToClose,
+      openTriggers = props.openTriggers,
+      closeTriggers = props.closeTriggers,
       showClass = props.showClass,
       _props$intervalsToCle = props.intervalsToClear,
       intervalsToClear = _props$intervalsToCle === void 0 ? [] : _props$intervalsToCle;
   var modal = document.querySelector(modalSelector);
-  Object(_common_modal__WEBPACK_IMPORTED_MODULE_1__["addListenersToArr"])(selectorsToOpen, open);
-  Object(_common_modal__WEBPACK_IMPORTED_MODULE_1__["addListenersToArr"])(selectorsToClose, close);
+  Object(_common_modal__WEBPACK_IMPORTED_MODULE_1__["addListenersToArr"])(openTriggers, open);
+  Object(_common_modal__WEBPACK_IMPORTED_MODULE_1__["addListenersToArr"])(closeTriggers, close);
   modal.addEventListener('click', function (e) {
     if (e.target && e.target === modal) {
       close();
@@ -5005,6 +5048,43 @@ function configureModal(props) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (configureModal);
+
+/***/ }),
+
+/***/ "./src/js/jsmodules/tabs.js":
+/*!**********************************!*\
+  !*** ./src/js/jsmodules/tabs.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var _require = __webpack_require__(/*! ../common/tabs */ "./src/js/common/tabs.js"),
+    setActiveElement = _require.setActiveElement,
+    displayOnlyOne = _require.displayOnlyOne;
+
+function configureTabs(contentSelector, linkSelector, linkClass) {
+  var initialIndex = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+  var links = document.querySelectorAll(linkSelector);
+  var activeTabIndex = initialIndex;
+  console.log(links);
+  displayOnlyOne(contentSelector, activeTabIndex);
+  setActiveElement(linkSelector, activeTabIndex, linkClass);
+  links.forEach(function (item, index) {
+    item.addEventListener('click', function () {
+      activeTabIndex = index;
+      displayOnlyOne(contentSelector, activeTabIndex);
+      setActiveElement(linkSelector, activeTabIndex, linkClass);
+    });
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (configureTabs);
 
 /***/ }),
 
@@ -5098,7 +5178,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jsmodules_formSubmit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./jsmodules/formSubmit */ "./src/js/jsmodules/formSubmit.js");
 /* harmony import */ var _jsmodules_imagePreview__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./jsmodules/imagePreview */ "./src/js/jsmodules/imagePreview.js");
 /* harmony import */ var _jsmodules_modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./jsmodules/modal */ "./src/js/jsmodules/modal.js");
-/* harmony import */ var _jsmodules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./jsmodules/timer */ "./src/js/jsmodules/timer.js");
+/* harmony import */ var _jsmodules_tabs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./jsmodules/tabs */ "./src/js/jsmodules/tabs.js");
+/* harmony import */ var _jsmodules_timer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./jsmodules/timer */ "./src/js/jsmodules/timer.js");
+
 
 
 
@@ -5112,15 +5194,15 @@ document.addEventListener('DOMContentLoaded', function () {
   }, 60000);
   var firstModal = {
     modalSelector: '.popup_engineer',
-    selectorsToOpen: ['.popup_engineer_btn'],
-    selectorsToClose: ['.popup_close'],
+    openTriggers: ['.popup_engineer_btn'],
+    closeTriggers: ['.popup_close'],
     showClass: 'show',
     intervalsToClear: [modalAutoTrigger]
   };
   var secondModal = {
     modalSelector: '.popup',
-    selectorsToOpen: ['.phone_link', '.phone_popup'],
-    selectorsToClose: ['.popup_close'],
+    openTriggers: ['.phone_link', '.phone_popup'],
+    closeTriggers: ['.popup_close'],
     showClass: 'show',
     intervalsToClear: [modalAutoTrigger]
   };
@@ -5148,8 +5230,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // preview for gallery
 
   Object(_common_validation__WEBPACK_IMPORTED_MODULE_1__["validateInputs"])('input[name="user_phone"]', /^[0-9+() ]+$/);
-  Object(_jsmodules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])('.sale', '2020-10-07T00:00');
-  Object(_jsmodules_imagePreview__WEBPACK_IMPORTED_MODULE_3__["default"])('.preview_images div');
+  Object(_jsmodules_timer__WEBPACK_IMPORTED_MODULE_6__["default"])('.sale', '2020-11-01T00:00');
+  Object(_jsmodules_imagePreview__WEBPACK_IMPORTED_MODULE_3__["default"])('.preview_images div'); // tabs 
+
+  Object(_jsmodules_tabs__WEBPACK_IMPORTED_MODULE_5__["default"])('.glazing_content', '.glazing_block', 'active', 0);
+  Object(_jsmodules_tabs__WEBPACK_IMPORTED_MODULE_5__["default"])('.decoration_content_item', '.decoration_slider .no_click', 'after_click', 0);
 });
 
 /***/ })
